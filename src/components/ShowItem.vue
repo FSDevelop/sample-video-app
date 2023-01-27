@@ -10,3 +10,9 @@ defineProps<{
 <template>
     <img :src="show.image.medium" />
 </template>
+
+<style scoped>
+img {
+    cursor: pointer;
+}
+</style>

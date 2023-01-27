@@ -24,5 +24,6 @@ defineProps<{
 <style scoped>
 .shows {
     display: flex;
+    gap: 10px;
 }
 </style>

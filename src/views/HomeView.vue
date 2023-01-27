@@ -4,7 +4,7 @@
       v-for="genre in genres"
       :key="genre"
       :genre="genre"
-      :shows="shows.filter(show => show.genres.includes(genre))"
+      :shows="getShowsByGenre(genre)"
     />
   </div>
 </template>
@@ -22,6 +22,7 @@ onMounted(async () => {
   let showsArr = await response.json();
 
   shows.value = showsArr;
+
   genres.value = groupGenres(showsArr);
 });
 
@@ -36,5 +37,18 @@ const groupGenres = (showsArr: Show[]) => {
 
     return acc;
   }, []);
+};
+
+const getShowsByGenre = (genre: string) => {
+  return shows.value
+    // filter by genre
+    .filter((show: Show) => {
+      return show.genres.includes(genre);
+    })
+
+    // shuffle the shows
+    .sort(() => {
+      return Math.random() - 0.5;
+    });
 };
 </script>
