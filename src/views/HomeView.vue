@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="view home">
     <ShowGallery
       v-for="genre in genres"
       :key="genre"
