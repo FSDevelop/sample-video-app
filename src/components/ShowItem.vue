@@ -1,28 +1,53 @@
-<script setup lang="ts">
-import { defineProps } from 'vue';
-import { Show } from '@/types';
-
-defineProps<{
-    show: Show,
-}>();
-</script>
-
 <template>
-    <div class="show">
+    <div class="show" @click="goToShowPage">
         <img :src="show.image.medium" />
         <div class="show__info">
-            <h3 class="show__name">{{ show.name }}</h3>
+            <h3 class="show__name" v-text="show.name" />
             <div class="show__summary" v-html="show.summary" />
-            <p class="show__genres">{{ show.genres.join(', ') }}</p>
+            <p class="show__genres" v-text="show.genres.join(', ')" />
         </div>
     </div>
 </template>
 
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { Show } from '@/types';
+import { useRouter } from 'vue-router';
+
+export default defineComponent({
+    props: {
+        show: {
+            type: Object as () => Show,
+            required: true,
+        },
+    },
+    setup(props) {
+        const router = useRouter();
+
+        const goToShowPage = () => {
+            router.push({
+                name: 'show',
+                params: {
+                    id: props.show.id,
+                },
+            });
+        };
+
+        return {
+            goToShowPage,
+        };
+    },
+});
+</script>
+
 <style lang="scss" scoped>
 .show {
     position: relative;
-    border-radius: 5px;
     cursor: pointer;
+
+    img {
+        border-radius: 5px;
+    }
 
     .show__name {
         margin-bottom: 0;

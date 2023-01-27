@@ -10,15 +10,26 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import ShowItem from '@/components/ShowItem.vue';
 import { Show } from '@/types';
-import { defineProps } from 'vue';
+import { defineComponent } from 'vue';
 
-defineProps<{
-    shows: Show[],
-    genre: string,
-}>();
+export default defineComponent({
+    components: {
+        ShowItem,
+    },
+    props: {
+        shows: {
+            type: Array as () => Show[],
+            required: true,
+        },
+        genre: {
+            type: String,
+            required: true,
+        },
+    },
+});
 </script>
 
 <style scoped>

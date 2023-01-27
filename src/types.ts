@@ -1,9 +1,10 @@
 export interface Show {
-    name: string;
     id: number;
+    name: string;
     genres: string[];
+    summary: string;
     image: {
-        medium: string;
-        original: string;
+        medium: string,
+        original: string
     };
 };
