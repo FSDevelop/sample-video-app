@@ -22,8 +22,18 @@ defineProps<{
 </script>
 
 <style scoped>
+h2 {
+    margin-left: 30px;
+}
+
 .shows {
     display: flex;
-    gap: 10px;
+    column-gap: 20px;
+    padding-bottom: 50px;
+    overflow-x: auto;
+}
+
+.shows::-webkit-scrollbar {
+    display: none;
 }
 </style>
