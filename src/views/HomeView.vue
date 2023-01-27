@@ -9,46 +9,58 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import ShowGallery from '@/components/ShowGallery.vue';
 import { Show } from '@/types';
-import { onMounted, ref } from 'vue';
+import { ref, defineComponent, onMounted } from 'vue';
 
-let shows = ref<Show[]>([]);
-let genres = ref<string[]>([]);
+export default defineComponent({
+    components: {
+        ShowGallery,
+    },
+    setup() {
+        let shows = ref<Show[]>([]);
+        let genres = ref<string[]>([]);
 
-onMounted(async () => {
-  let response = await fetch('https://api.tvmaze.com/shows');
-  let showsArr = await response.json();
+        onMounted(async () => {
+            let response = await fetch('https://api.tvmaze.com/shows');
+            let showsArr = await response.json();
 
-  shows.value = showsArr;
+            shows.value = showsArr;
+            genres.value = groupGenres(showsArr);
+        });
 
-  genres.value = groupGenres(showsArr);
+        const getShowsByGenre = (genre: string) => {
+            return shows.value
+                // filter by genre
+                .filter((show: Show) => {
+                    return show.genres.includes(genre);
+                })
+
+                // shuffle the shows
+                .sort(() => {
+                    return Math.random() - 0.5;
+                });
+        };
+
+        return {
+            getShowsByGenre,
+            shows,
+            genres,
+        };
+    },
 });
 
 const groupGenres = (showsArr: Show[]) => {
-  return showsArr.reduce((acc: string[], show: Show) => {
+    return showsArr.reduce((acc: string[], show: Show) => {
 
-    show.genres.forEach((genre: string) => {
-      if (!acc.includes(genre)) {
-        acc.push(genre);
-      }
-    });
+        show.genres.forEach((genre: string) => {
+            if (!acc.includes(genre)) {
+                acc.push(genre);
+            }
+        });
 
-    return acc;
-  }, []);
-};
-
-const getShowsByGenre = (genre: string) => {
-  return shows.value
-    // filter by genre
-    .filter((show: Show) => {
-      return show.genres.includes(genre);
-    })
-
-    // shuffle the shows
-    .sort(() => {
-      return Math.random() - 0.5;
-    });
+        return acc;
+    }, []);
 };
 </script>
