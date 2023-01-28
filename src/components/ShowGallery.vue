@@ -95,7 +95,7 @@ export default defineComponent({
 }
 
 h2 {
-    margin-left: 30px;
+    margin-left: 70px;
 }
 
 .shows {
