@@ -30,21 +30,19 @@ export default defineComponent({
             genres.value = groupGenres(showsArr);
         });
 
-        const getShowsByGenre = (genre: string) => {
-            return shows.value
-                // filter by genre
-                .filter((show: Show) => {
-                    return show.genres.includes(genre);
-                })
-
-                // shuffle the shows
-                .sort(() => {
-                    return Math.random() - 0.5;
-                });
-        };
-
         return {
-            getShowsByGenre,
+            getShowsByGenre(genre: string) {
+                return shows.value
+                    // filter by genre
+                    .filter((show: Show) => {
+                        return show.genres.includes(genre);
+                    })
+
+                    // shuffle the shows
+                    .sort(() => {
+                        return Math.random() - 0.5;
+                    });
+            },
             shows,
             genres,
         };
