@@ -11,7 +11,7 @@
 import ShowInfo from '@/components/ShowInfo.vue';
 import { API_URL } from '@/ts/constants';
 import { request } from '@/ts/utils';
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import { Show } from '@/types';
 import { useRoute } from 'vue-router';
 import store from '@/store';
@@ -30,14 +30,15 @@ export default defineComponent({
             loading.value = true;
         }
 
+        onMounted(async () => {
+            if (!store.getters.selectedShow) {
+                const route = useRoute();
+                show.value = await request(`${API_URL}/shows/${route.params.id}`);
+                loading.value = false;
+            }
+        });
+
         return { loading, show };
-    },
-    async mounted() {
-        if (!store.getters.selectedShow) {
-            const route = useRoute();
-            this.show = await request(`${API_URL}/shows/${route.params.id}`);
-            this.loading = false;
-        }
     },
 });
 </script>
