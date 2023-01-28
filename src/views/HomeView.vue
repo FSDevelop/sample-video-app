@@ -1,12 +1,12 @@
 <template>
-  <div class="view home">
-    <ShowGallery
-      v-for="genre in genres"
-      :key="genre"
-      :genre="genre"
-      :shows="getShowsByGenre(genre)"
-    />
-  </div>
+    <div class="view home">
+        <ShowGallery
+            v-for="genre in genres"
+            :key="genre"
+            :genre="genre"
+            :shows="getShowsByGenre(genre)"
+        />
+    </div>
 </template>
 
 <script lang="ts">

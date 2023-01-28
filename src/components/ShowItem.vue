@@ -1,6 +1,7 @@
 <template>
     <div class="show" @click="goToShowPage">
         <img :src="show.image.medium" />
+
         <div class="show__info">
             <h3 class="show__name" v-text="show.name" />
             <div class="show__summary" v-html="show.summary" />
@@ -13,6 +14,7 @@
 import { defineComponent } from 'vue';
 import { Show } from '@/types';
 import { useRouter } from 'vue-router';
+import store from '@/store';
 
 export default defineComponent({
     props: {
@@ -24,17 +26,16 @@ export default defineComponent({
     setup(props) {
         const router = useRouter();
 
-        const goToShowPage = () => {
-            router.push({
-                name: 'show',
-                params: {
-                    id: props.show.id,
-                },
-            });
-        };
-
         return {
-            goToShowPage,
+            goToShowPage() {
+                store.dispatch('selectShow', props.show);
+                
+                router.push({
+                    name: 'show',
+                    params: { id: props.show.id },
+                });
+
+            },
         };
     },
 });

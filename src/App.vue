@@ -2,17 +2,32 @@
   <div>
     <nav>
       <div class="menu__options">
-        <router-link to="/">Home</router-link>
+        <RouterLink to="/">Home</RouterLink>
       </div>
 
       <font-awesome-icon :icon="['fas', 'search']" />
     </nav>
 
-    <router-view />
+    <RouterView class="router-view" v-slot="{ Component }">
+        <Transition name="fade" mode="out-in">
+            <component :is="Component" />
+        </Transition>
+    </RouterView>
   </div>
 </template>
 
 <style lang="scss">
+.fade-enter-active,
+.fade-leave-active {
+    transition-duration: 0.8s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+    transform: translateX(100%);
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
