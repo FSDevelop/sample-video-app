@@ -61,4 +61,11 @@ export default defineComponent({
 .show:hover .show__info {
     display: block;
 }
+
+@media only screen and (max-width: 768px) {
+    .show:hover img {
+        transform: scale(1);
+        transition: none;
+    }
+}
 </style>

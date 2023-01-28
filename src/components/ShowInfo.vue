@@ -72,8 +72,13 @@ export default defineComponent({
         const endedDate = ref<string>();
 
         if (props.variant === 'large') {
-            premieredDate.value = formatDate(props.show.premiered);
-            endedDate.value = formatDate(props.show.ended);
+            if (props.show.premiered) {
+                premieredDate.value = formatDate(props.show.premiered);
+            }
+
+            if (props.show.ended) {
+                endedDate.value = formatDate(props.show.ended);
+            }
         }
 
         const slider = computed(() => props.variant === 'slider');
@@ -90,6 +95,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.picture__slider {
+    width: 210px;
+}
+
 .show__info {
     z-index: 100;
 
@@ -102,7 +111,6 @@ export default defineComponent({
         right: 0;
         position: absolute;
         z-index: 0;
-        mask-image: linear-gradient(to left, rgba(0,0,0,1), rgba(0,0,0,0));
     }
 
     table {
@@ -128,6 +136,7 @@ export default defineComponent({
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
+            line-clamp: 5;
             -webkit-line-clamp: 5;
             font-size: 0.9rem;
             -webkit-box-orient: vertical;
@@ -143,7 +152,6 @@ export default defineComponent({
     &.show__info__large {
         .show__data {
             position: relative;
-            width: 60%;
 
             .show__name {
                 margin-bottom: 0;
@@ -160,6 +168,60 @@ export default defineComponent({
                 font-weight: bold;
             }
         }
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    .show__info__large {
+        .show__data {
+            width: calc(70% - 40px);
+        }
+    }
+
+    img.picture__large {
+        mask-image: linear-gradient(to left, rgba(0,0,0,1), rgba(0,0,0,0));
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .picture__slider {
+        width: 140px;
+    }
+
+    .show__info__slider {
+        width: calc(100% - 20px) !important;
+        height: calc(100% - 0px) !important;
+        padding: 0px !important;
+
+        .show__data {
+            padding: 5px;
+
+            .show__name {
+                font-size: 1rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .show__summary {
+                -webkit-line-clamp: 3;
+                line-clamp: 3;
+            }
+            
+            .show__genres {
+                font-size: 0.8rem;
+            }
+        }
+    }
+
+    .show__info__large {
+        .show__data {
+            width: calc(100% - 40px);
+        }
+    }
+
+    img.picture__large {
+        opacity: 0.5;
+        mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
     }
 }
 </style>

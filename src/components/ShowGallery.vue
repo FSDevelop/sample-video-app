@@ -31,7 +31,7 @@
 <script lang="ts">
 import ShowItem from '@/components/ShowItem.vue';
 import { Show } from '@/types';
-import { defineComponent, ref, onMounted, inject } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 
 export default defineComponent({
     components: {
@@ -84,6 +84,10 @@ h2 {
     column-gap: 10px;
 
     .slider__navigation {
+        height: 295px;
+        cursor: pointer;
+        border-radius: 5px;
+
         &.slider__navigation-invisible {
             visibility: hidden;
         }
@@ -91,9 +95,6 @@ h2 {
         &:hover {
             background-color: #2c3e50;
         }
-
-        height: 295px;
-        cursor: pointer;
 
         svg {
             padding: 0;
@@ -110,6 +111,30 @@ h2 {
 
         &::-webkit-scrollbar {
             display: none;
+        }
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    h2 {
+        margin-left: 40px;
+    }
+
+    .slider {
+        column-gap: 5px;
+
+        .slider__navigation {
+            height: 197px;
+
+            svg {
+                padding: 5px;
+                margin-top: 80px;
+            }
+        }
+
+        .shows {
+            column-gap: 5px;
+            padding-bottom: 0;
         }
     }
 }
