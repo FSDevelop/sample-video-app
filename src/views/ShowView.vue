@@ -9,6 +9,8 @@
 
 <script lang="ts">
 import ShowInfo from '@/components/ShowInfo.vue';
+import { API_URL } from '@/ts/constants';
+import { request } from '@/ts/utils';
 import { defineComponent, ref } from 'vue';
 import { Show } from '@/types';
 import { useRoute } from 'vue-router';
@@ -30,14 +32,10 @@ export default defineComponent({
 
         return { loading, show };
     },
-    async created() {
+    async mounted() {
         if (!store.getters.selectedShow) {
             const route = useRoute();
-            
-            let response = await fetch(`http://api.tvmaze.com/shows/${route.params.id}`);
-            let data = await response.json();
-
-            this.show = data;
+            this.show = await request(`${API_URL}/shows/${route.params.id}`);
             this.loading = false;
         }
     },

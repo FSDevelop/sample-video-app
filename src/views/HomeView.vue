@@ -1,5 +1,5 @@
 <template>
-    <div class="view home">
+    <div class="view home__view">
         <ShowGallery
             v-for="genre in genres"
             :key="genre"
@@ -12,6 +12,8 @@
 <script lang="ts">
 import ShowGallery from '@/components/ShowGallery.vue';
 import { Show } from '@/types';
+import { API_URL } from '@/ts/constants';
+import { request } from '@/ts/utils';
 import { ref, defineComponent, onMounted } from 'vue';
 
 export default defineComponent({
@@ -23,9 +25,7 @@ export default defineComponent({
         let genres = ref<string[]>([]);
 
         onMounted(async () => {
-            let response = await fetch('https://api.tvmaze.com/shows');
-            let showsArr = await response.json();
-
+            const showsArr = await request(`${API_URL}/shows`);
             shows.value = showsArr;
             genres.value = groupGenres(showsArr);
         });
