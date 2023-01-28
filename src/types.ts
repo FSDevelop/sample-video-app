@@ -4,7 +4,12 @@ export interface Show {
     genres: string[];
     summary: string;
     image: {
-        medium: string,
-        original: string
+        medium: string;
+        original: string;
     };
+    rating: {
+        average: number;
+    };
+    premiered: Date,
+    ended: Date,
 };

@@ -1,23 +1,23 @@
 <template>
-    <div class="view show" v-if="!loading && show">
-        <h1 v-text="show.name" />
-
-        <div class="show__info">
-            <img :src="show.image.medium" />
-
-            <div class="show__summary" v-html="show.summary" />
-            <p class="show__genres" v-text="show.genres.join(', ')" />
-        </div>
+    <div class="view show__view" v-if="!loading && show">
+        <ShowInfo
+            :show="show"
+            variant="large"
+        />
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import ShowInfo from '@/components/ShowInfo.vue';
+import { defineComponent, ref } from 'vue';
 import { Show } from '@/types';
 import { useRoute } from 'vue-router';
 import store from '@/store';
 
 export default defineComponent({
+    components: {
+        ShowInfo,
+    },
     setup() {
         let show = ref<Show>();
         let loading = ref<boolean>(false);

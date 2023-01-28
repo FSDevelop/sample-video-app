@@ -1,22 +1,23 @@
 <template>
     <div class="show" @click="goToShowPage">
-        <img :src="show.image.medium" />
-
-        <div class="show__info">
-            <h3 class="show__name" v-text="show.name" />
-            <div class="show__summary" v-html="show.summary" />
-            <p class="show__genres" v-text="show.genres.join(', ')" />
-        </div>
+        <ShowInfo
+            :show="show"
+            variant="slider"
+        />
     </div>
 </template>
 
 <script lang="ts">
+import ShowInfo from '@/components/ShowInfo.vue';
 import { defineComponent } from 'vue';
 import { Show } from '@/types';
 import { useRouter } from 'vue-router';
 import store from '@/store';
 
 export default defineComponent({
+    components: {
+        ShowInfo,
+    },
     props: {
         show: {
             type: Object as () => Show,
@@ -41,41 +42,13 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .show {
     position: relative;
     cursor: pointer;
 
     img {
         border-radius: 5px;
-    }
-
-    .show__name {
-        margin-bottom: 0;
-    }
-
-    .show__summary {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 5;
-        font-size: 0.9rem;
-        -webkit-box-orient: vertical;
-    }
-    
-    .show__info {
-        display: none;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: calc(100% - 10px);
-        height: calc(100% - 10px);
-        padding: 10px;
-    }
-
-    .show__genres {
-        margin-top: 10px;
-        font-weight: bold;
     }
 }
 
