@@ -4,6 +4,7 @@
     <div class="slider">
         <div
             class="slider__navigation"
+            :class="{ 'slider__navigation-invisible': !showNavigators }"
             @click="navigate('left')"
         >
             <font-awesome-icon :icon="['fas', 'chevron-left']" />
@@ -18,8 +19,8 @@
         </div>
 
         <div
-            v-if="showRightNavigator"
             class="slider__navigation"
+            :class="{ 'slider__navigation-invisible': !showNavigators }"
             @click="navigate('right')"
         >
             <font-awesome-icon :icon="['fas', 'chevron-right']" />
@@ -49,17 +50,17 @@ export default defineComponent({
     setup() {
         // eslint-disable-next-line
         const showsElm = ref<any>(null);
-        const showRightNavigator = ref(false);
+        const showNavigators = ref(false);
 
         onMounted(() => {
             if (showsElm.value.scrollWidth + 80 >= window.innerWidth) {
-                showRightNavigator.value = true;
+                showNavigators.value = true;
             }
         });
 
         return {
             showsElm,
-            showRightNavigator,
+            showNavigators,
             navigate(direction: string) {
                 if (showsElm.value) {
                     showsElm.value.scroll({
@@ -74,11 +75,19 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+h2 {
+    margin-left: 70px;
+}
+
 .slider {
     display: flex;
     column-gap: 10px;
 
     .slider__navigation {
+        &.slider__navigation-invisible {
+            visibility: hidden;
+        }
+
         &:hover {
             background-color: #2c3e50;
         }
@@ -92,20 +101,16 @@ export default defineComponent({
             padding: 20px;
         }
     }
-}
 
-h2 {
-    margin-left: 70px;
-}
+    .shows {
+        display: flex;
+        column-gap: 20px;
+        padding-bottom: 50px;
+        overflow-x: auto;
 
-.shows {
-    display: flex;
-    column-gap: 20px;
-    padding-bottom: 50px;
-    overflow-x: auto;
-}
-
-.shows::-webkit-scrollbar {
-    display: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
 }
 </style>
