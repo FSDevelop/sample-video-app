@@ -5,7 +5,7 @@
         <RouterLink to="/">Home</RouterLink>
       </div>
 
-      <font-awesome-icon :icon="['fas', 'search']" />
+      <ShowsSearch />
     </nav>
 
     <RouterView class="router-view" v-slot="{ Component }">
@@ -15,6 +15,10 @@
     </RouterView>
   </div>
 </template>
+
+<script setup lang="ts">
+import ShowsSearch from '@/components/Search/ShowsSearch.vue';
+</script>
 
 <style lang="scss">
 .fade-enter-active,
