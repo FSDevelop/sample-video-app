@@ -12,7 +12,6 @@ import ShowInfo from '@/components/ShowInfo.vue';
 import { defineComponent } from 'vue';
 import { Show } from '@/types';
 import { useRouter } from 'vue-router';
-import store from '@/store';
 
 export default defineComponent({
     components: {
@@ -29,13 +28,10 @@ export default defineComponent({
 
         return {
             goToShowPage() {
-                store.dispatch('selectShow', props.show);
-                
                 router.push({
                     name: 'show',
                     params: { id: props.show.id },
                 });
-
             },
         };
     },

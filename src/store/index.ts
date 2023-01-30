@@ -1,38 +1,51 @@
 import { createStore } from 'vuex';
 import { request } from '@/ts/utils';
-import { Show } from '@/types';
+import { Show, GlobalState } from '@/types';
 import { API_URL } from '@/ts/constants';
 
+const state: GlobalState = {
+    selectedShow: null,
+    shows: [],
+};
+
 export default createStore({
-    state: {
-        selectedShow: null,
-        shows: [],
-    },
+    state,
     getters: {
-        getSelectedShow(state) {
+        getSelectedShow(state): Show | null {
             return state.selectedShow;
         },
-        getShows(state) {
+        getShows(state): Show[] {
             return state.shows;
         },
     },
     mutations: {
-        selectShow(state, show) {
+        selectShow(state, show: Show) {
             state.selectedShow = show;
         },
-        async loadShows(state) {
-            if (state.shows.length === 0) {
-                const shows = await request(`${API_URL}/shows`);
-                state.shows = shows;
-            }
+        loadShows(state, shows: Show[]) {
+            state.shows = shows;
         }
     },
     actions: {
-        selectShow({ commit }, show: Show) {
-            commit('selectShow', show);
+        async selectShow({ commit }, showId: number) {
+            try {
+                if (!this.state.selectedShow) {
+                    const selectedShow: Show = await request(`${API_URL}/shows/${showId}`);
+                    commit('selectShow', selectedShow);
+                }
+            } catch (e) {
+                console.error(e);
+            }
         },
-        loadShows({ commit }) {
-            commit('loadShows');
+        async loadShows({ state, commit }) {
+            try {
+                if (state.shows.length === 0) {
+                    const shows = await request(`${API_URL}/shows`);
+                    commit('loadShows', shows);
+                }
+            } catch (e) {
+                console.error(e);
+            }
         },
     },
     modules: {},

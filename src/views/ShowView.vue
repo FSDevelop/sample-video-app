@@ -9,9 +9,7 @@
 
 <script lang="ts">
 import ShowInfo from '@/components/ShowInfo.vue';
-import { API_URL } from '@/ts/constants';
-import { request } from '@/ts/utils';
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { Show } from '@/types';
 import { useRoute } from 'vue-router';
 import store from '@/store';
@@ -21,22 +19,11 @@ export default defineComponent({
         ShowInfo,
     },
     setup() {
-        let show = ref<Show>();
-        let loading = ref<boolean>(false);
+        const route = useRoute();
+        store.dispatch('selectShow', route.params.id);
 
-        if (store.getters.getSelectedShow) {
-            show = store.getters.getSelectedShow;
-        } else {
-            loading.value = true;
-        }
-
-        onMounted(async () => {
-            if (!store.getters.getSelectedShow) {
-                const route = useRoute();
-                show.value = await request(`${API_URL}/shows/${route.params.id}`);
-                loading.value = false;
-            }
-        });
+        let show = computed<Show>(() => store.getters.getSelectedShow);
+        let loading = computed<boolean>(() => !show.value);
 
         return { loading, show };
     },

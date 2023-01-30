@@ -10,6 +10,11 @@ export interface Show {
     rating: {
         average: number;
     };
-    premiered: Date,
-    ended: Date,
+    premiered: Date;
+    ended: Date;
+};
+
+export interface GlobalState {
+    selectedShow: Show | null;
+    shows: Show[];
 };

@@ -10,7 +10,6 @@
 import { Show } from '@/types';
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
-import store from '@/store/index';
 
 export default defineComponent({
     props: {
@@ -23,8 +22,6 @@ export default defineComponent({
         const router = useRouter();
 
         const goToShow = () => {
-            store.dispatch('selectShow', props.show);
-                            
             router.push({
                 name: 'show',
                 params: { id: props.show.id },
