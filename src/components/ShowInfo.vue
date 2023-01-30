@@ -41,7 +41,6 @@
                     </tr>
                 </table>
             </div>
-
             <p
                 v-if="slider"
                 class="show__genres"
@@ -114,8 +113,15 @@ export default defineComponent({
     }
 
     table {
-        width: 440px;
+        width: 100%;
+        max-width: 440px;
         font-size: 1.2rem;
+
+        tr {
+            td:first-child {
+                min-width: 160px;
+            }
+        }
     }
 
     &.show__info__slider {

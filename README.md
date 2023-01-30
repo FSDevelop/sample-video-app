@@ -1,5 +1,9 @@
 # sample-app
 
+## Architecture
+
+
+
 ## Project setup
 ```
 npm install

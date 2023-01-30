@@ -13,8 +13,9 @@
 import ShowGallery from '@/components/ShowGallery.vue';
 import { Show } from '@/types';
 import { API_URL } from '@/ts/constants';
-import { request } from '@/ts/utils';
+import { request, shuffle } from '@/ts/utils';
 import { ref, defineComponent, onMounted } from 'vue';
+import store from '@/store/index';
 
 export default defineComponent({
     components: {
@@ -27,21 +28,18 @@ export default defineComponent({
         onMounted(async () => {
             const showsArr = await request(`${API_URL}/shows`);
             shows.value = showsArr;
-            genres.value = groupGenres(showsArr);
+            genres.value = shuffle(groupGenres(showsArr));
+
+            store.dispatch('loadShows', shows);
         });
 
         return {
             getShowsByGenre(genre: string) {
-                return shows.value
-                    // filter by genre
-                    .filter((show: Show) => {
-                        return show.genres.includes(genre);
-                    })
-
-                    // shuffle the shows
-                    .sort(() => {
-                        return Math.random() - 0.5;
-                    });
+                return shuffle(
+                    shows.value.filter(
+                        (show: Show) => show.genres.includes(genre)
+                    )
+                );
             },
             shows,
             genres,
@@ -62,3 +60,9 @@ const groupGenres = (showsArr: Show[]) => {
     }, []);
 };
 </script>
+
+<style scoped>
+.home__view {
+    padding-top: 6rem;
+}
+</style>

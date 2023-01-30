@@ -41,13 +41,10 @@ import ShowsSearch from '@/components/Search/ShowsSearch.vue';
 
 .view {
     margin: 8px;
+    padding-top: 60px;
 }
 
 nav {
-    display: flex;
-    justify-content: space-between;
-    background-color: #2c3e50;
-
     .menu__options {
         display: flex;
 
@@ -67,11 +64,5 @@ nav {
             }
         }
     }
-}
-
-svg {
-    padding: 1.5rem;
-    cursor: pointer;
-    font-size: 1.5rem;
 }
 </style>

@@ -24,14 +24,14 @@ export default defineComponent({
         let show = ref<Show>();
         let loading = ref<boolean>(false);
 
-        if (store.getters.selectedShow) {
-            show = store.getters.selectedShow;
+        if (store.getters.getSelectedShow) {
+            show = store.getters.getSelectedShow;
         } else {
             loading.value = true;
         }
 
         onMounted(async () => {
-            if (!store.getters.selectedShow) {
+            if (!store.getters.getSelectedShow) {
                 const route = useRoute();
                 show.value = await request(`${API_URL}/shows/${route.params.id}`);
                 loading.value = false;

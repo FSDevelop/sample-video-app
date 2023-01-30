@@ -64,7 +64,7 @@ export default defineComponent({
             navigate(direction: string) {
                 if (showsElm.value) {
                     showsElm.value.scroll({
-                        left: showsElm.value.scrollLeft + (direction === 'left' ? -500 : 500),
+                        left: showsElm.value.scrollLeft + (direction === 'left' ? -320 : 320),
                         behavior: 'smooth'
                     });
                 }
