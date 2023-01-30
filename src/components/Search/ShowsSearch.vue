@@ -3,6 +3,7 @@
         <font-awesome-icon
             :icon="['fas', 'search']"
             ref="searchIcon"
+            @click="searchIconMouseOver"
         />
 
         <div
