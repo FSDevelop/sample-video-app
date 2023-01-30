@@ -1,7 +1,7 @@
 <template>
-    <div class="view home__view">
+    <div class="view home__view" ref="home" v-if="!loading" @scroll="lazyLoading">
         <ShowGallery
-            v-for="genre in genres"
+            v-for="genre in genres.slice(0, genresLimit)"
             :key="genre"
             :genre="genre"
             :shows="getShowsByGenre(genre)"
@@ -13,7 +13,7 @@
 import ShowGallery from '@/components/ShowGallery.vue';
 import { Show } from '@/types';
 import { shuffle } from '@/ts/utils';
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, ref } from 'vue';
 import store from '@/store/index';
 
 export default defineComponent({
@@ -23,20 +23,33 @@ export default defineComponent({
     setup() {
         store.dispatch('loadShows');
 
-        const shows = computed<Show[]>(() => store.getters.getShows);
+        const loading = computed<boolean>(() => genres.value.length === 0);
+        const shows = computed<Show[]>(() => {
+            return shuffle(store.getters.getShows);
+        });
         const genres = computed<string[]>(() => shuffle(groupGenres(shows.value)));
+        const genresLimit = ref<number>(4);
 
         const getShowsByGenre = (genre: string): Show[] => {
-            return shuffle(
-                shows.value.filter(
-                    (show: Show) => show.genres.includes(genre)
-                )
+            return shows.value.filter(
+                (show: Show) => show.genres.includes(genre)
             );
+        };
+
+        const lazyLoading = (elm: any) => {
+            elm = elm.srcElement;
+
+            if (Math.ceil(elm.scrollTop + elm.clientHeight) >= elm.scrollHeight) {
+                genresLimit.value += 2;
+            }
         };
 
         return {
             shows,
             genres,
+            loading,
+            genresLimit,
+            lazyLoading,
             getShowsByGenre,
         };
     },
@@ -59,5 +72,8 @@ const groupGenres = (showsArr: Show[]): string[] => {
 <style scoped lang="scss">
 .home__view {
     padding-top: 6rem;
+    overflow-y: auto;
+    height: calc(100vh - 6rem);
+    margin: 0 auto;
 }
 </style>
