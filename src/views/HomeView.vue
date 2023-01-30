@@ -23,19 +23,21 @@ export default defineComponent({
     setup() {
         store.dispatch('loadShows');
 
-        let shows = computed(() => store.getters.getShows);
-        let genres = computed(() => shuffle(groupGenres(shows.value)));
+        const shows = computed(() => store.getters.getShows);
+        const genres = computed(() => shuffle(groupGenres(shows.value)));
+
+        const getShowsByGenre = (genre: string) => {
+            return shuffle(
+                shows.value.filter(
+                    (show: Show) => show.genres.includes(genre)
+                )
+            );
+        };
 
         return {
-            getShowsByGenre(genre: string) {
-                return shuffle(
-                    shows.value.filter(
-                        (show: Show) => show.genres.includes(genre)
-                    )
-                );
-            },
             shows,
             genres,
+            getShowsByGenre,
         };
     },
 });
@@ -54,7 +56,7 @@ const groupGenres = (showsArr: Show[]) => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .home__view {
     padding-top: 6rem;
 }
