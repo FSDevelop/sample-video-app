@@ -31,7 +31,7 @@
 <script lang="ts">
 import ShowItem from '@/components/ShowItem.vue';
 import { Show } from '@/types';
-import { defineComponent, computed, ref, onMounted } from 'vue';
+import { defineComponent, computed, ref } from 'vue';
 
 export default defineComponent({
     components: {

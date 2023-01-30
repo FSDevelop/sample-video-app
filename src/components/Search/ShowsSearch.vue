@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import SearchResults from '@/components/Search/SearchResults.vue';
-import { ref, defineComponent, computed } from 'vue';
+import { ref, defineComponent, computed, watch } from 'vue';
 import { Show } from '@/types';
 import store from '@/store/index';
 
@@ -45,6 +45,10 @@ export default defineComponent({
         const availableResults = computed(() => store.getters.getShows);
         const filteredResults = ref<Show[]>([]);
 
+        watch(searchInput, (curr) => {
+            if (curr) curr.focus();
+        });
+
         const searchIconMouseOver = () => {
             enableSearch.value = true;
         };
@@ -53,6 +57,9 @@ export default defineComponent({
             if (!searchInput.value.value) {
                 enableSearch.value = false;
             }
+            
+            // delay clear results (when clicking one of the options this is triggered)
+            setTimeout(() => filteredResults.value = [], 100);
         };
 
         let searchTimeout: number;
@@ -60,12 +67,12 @@ export default defineComponent({
         const checkResults = () => {
             clearTimeout(searchTimeout);
 
-            if (searchInput.value.value.length >= 3) {
+            if (searchInput.value.value.length >= 2) {
                 searchTimeout = setTimeout(() => {
                     filteredResults.value = availableResults.value.filter((show: Show) => {
                         return show.name.toLowerCase().includes(searchInput.value.value.toLowerCase());
                     });
-                }, 500);
+                }, 400);
             } else {
                 filteredResults.value = [];
             }
@@ -104,6 +111,7 @@ export default defineComponent({
         right: 10px;
         top: 10px;
         padding: 0;
+        cursor: auto;
     }
 
     .search-input {
