@@ -75,5 +75,9 @@ const groupGenres = (showsArr: Show[]): string[] => {
     overflow-y: auto;
     height: calc(100vh - 6rem);
     margin: 0 auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 </style>
