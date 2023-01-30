@@ -2,7 +2,19 @@
     <img v-if="slider" :src="show.image.medium" class="picture__slider" />
     
     <div class="show__info" :class="{ 'show__info__slider': slider, 'show__info__large': large }">
-        <img v-if="large" :src="show.image.original" class="picture__large" />
+        <img
+            v-if="large"
+            :src="show.image.original"
+            class="picture__large"
+            :class="{ 'animated': pictureAnimationOn }"
+            @load="pictureAnimationOn = true"
+        />
+
+        <img
+            v-if="large"
+            :src="show.image.medium"
+            class="picture__large__medium"
+        />
         
         <div class="show__data">
             <RatingStars
@@ -66,6 +78,7 @@ export default defineComponent({
     setup(props) {
         const premieredDate = ref<string>();
         const endedDate = ref<string>();
+        const pictureAnimationOn = ref<boolean>(false);
 
         if (props.variant === 'large') {
             if (props.show.premiered) {
@@ -84,7 +97,8 @@ export default defineComponent({
             slider,
             large,
             endedDate,
-            premieredDate
+            premieredDate,
+            pictureAnimationOn,
         };
     },
 });
@@ -95,8 +109,16 @@ export default defineComponent({
     width: 210px;
 }
 
+.picture__large__medium {
+    height: 400px;
+    margin-top: 50px;
+    margin-left: 20px;
+    border-radius: 5px;
+}
+
 .show__info {
     z-index: 100;
+    display: flex;
 
     .show__data {
         padding: 20px;
@@ -105,8 +127,11 @@ export default defineComponent({
     img.picture__large {
         width: 100%;
         right: 0;
-        position: absolute;
+        position: fixed;
+        opacity: 0.2;
         z-index: 0;
+        transition: all 4s ease-in-out;
+        transform: translateY(-700px);
     }
 
     table {
@@ -174,6 +199,10 @@ export default defineComponent({
 }
 
 @media only screen and (min-width: 769px) {
+    .picture__large__medium {
+        display: block;
+    }
+
     .show__info__large {
         .show__data {
             width: calc(100% - 40px);
@@ -183,12 +212,19 @@ export default defineComponent({
 
     img.picture__large {
         mask-image: linear-gradient(to left, rgba(0,0,0,1), rgba(0,0,0,0));
+
+        &.animated {
+            transform: translateY(0px);
+        }
     }
 }
 
 @media only screen and (max-width: 768px) {
     .picture__slider {
         width: 140px;
+    }
+    .picture__large__medium {
+        display: none;
     }
 
     .show__info__slider {
@@ -225,6 +261,10 @@ export default defineComponent({
     img.picture__large {
         opacity: 0.5;
         mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+
+        &.animated {
+            transform: translateY(0);
+        }
     }
 }
 </style>
