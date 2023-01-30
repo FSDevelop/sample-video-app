@@ -26,13 +26,15 @@ export default defineComponent({
     setup(props) {
         const router = useRouter();
 
+        const goToShowPage = (): void => {
+            router.push({
+                name: 'show',
+                params: { id: props.show.id },
+            });
+        };
+
         return {
-            goToShowPage() {
-                router.push({
-                    name: 'show',
-                    params: { id: props.show.id },
-                });
-            },
+            goToShowPage,
         };
     },
 });

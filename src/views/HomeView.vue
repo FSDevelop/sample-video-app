@@ -23,10 +23,10 @@ export default defineComponent({
     setup() {
         store.dispatch('loadShows');
 
-        const shows = computed(() => store.getters.getShows);
-        const genres = computed(() => shuffle(groupGenres(shows.value)));
+        const shows = computed<Show[]>(() => store.getters.getShows);
+        const genres = computed<string[]>(() => shuffle(groupGenres(shows.value)));
 
-        const getShowsByGenre = (genre: string) => {
+        const getShowsByGenre = (genre: string): Show[] => {
             return shuffle(
                 shows.value.filter(
                     (show: Show) => show.genres.includes(genre)
@@ -42,7 +42,7 @@ export default defineComponent({
     },
 });
 
-const groupGenres = (showsArr: Show[]) => {
+const groupGenres = (showsArr: Show[]): string[] => {
     return showsArr.reduce((acc: string[], show: Show) => {
 
         show.genres.forEach((genre: string) => {

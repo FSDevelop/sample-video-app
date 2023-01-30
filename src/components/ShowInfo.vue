@@ -90,8 +90,8 @@ export default defineComponent({
             }
         }
 
-        const slider = computed(() => props.variant === 'slider');
-        const large = computed(() => props.variant === 'large');
+        const slider = computed<boolean>(() => props.variant === 'slider');
+        const large = computed<boolean>(() => props.variant === 'large');
 
         return {
             slider,

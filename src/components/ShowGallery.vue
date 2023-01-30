@@ -31,7 +31,7 @@
 <script lang="ts">
 import ShowItem from '@/components/ShowItem.vue';
 import { Show } from '@/types';
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, computed, ref, onMounted } from 'vue';
 
 export default defineComponent({
     components: {
@@ -48,28 +48,26 @@ export default defineComponent({
         },
     },
     setup() {
-        // eslint-disable-next-line
-        const showsElm = ref<any>(null);
-        const showNavigators = ref(false);
+        const showsElm = ref<HTMLElement>();
 
-        onMounted(() => {
-            if (showsElm.value.scrollWidth + 80 >= window.innerWidth) {
-                showNavigators.value = true;
-            }
+        const showNavigators = computed(() => {
+            return (showsElm.value && showsElm.value.scrollWidth + 80 >= window.innerWidth);
         });
+
+        const navigate = (direction: string): void => {
+            if (showsElm.value) {
+                showsElm.value.scroll({
+                    left: showsElm.value.scrollLeft + (direction === 'left' ? -320 : 320),
+                    behavior: 'smooth'
+                });
+            }
+        };
 
         return {
             showsElm,
             showNavigators,
-            navigate(direction: string) {
-                if (showsElm.value) {
-                    showsElm.value.scroll({
-                        left: showsElm.value.scrollLeft + (direction === 'left' ? -320 : 320),
-                        behavior: 'smooth'
-                    });
-                }
-            },
-        }
+            navigate,
+        };
     },
 });
 </script>

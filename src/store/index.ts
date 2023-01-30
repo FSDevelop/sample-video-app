@@ -40,7 +40,7 @@ export default createStore({
         async loadShows({ state, commit }) {
             try {
                 if (state.shows.length === 0) {
-                    const shows = await request(`${API_URL}/shows`);
+                    const shows: Show[] = await request(`${API_URL}/shows`);
                     commit('loadShows', shows);
                 }
             } catch (e) {
