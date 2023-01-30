@@ -12,9 +12,8 @@
 <script lang="ts">
 import ShowGallery from '@/components/ShowGallery.vue';
 import { Show } from '@/types';
-import { API_URL } from '@/ts/constants';
-import { request, shuffle } from '@/ts/utils';
-import { ref, defineComponent, onMounted } from 'vue';
+import { shuffle } from '@/ts/utils';
+import { defineComponent, computed } from 'vue';
 import store from '@/store/index';
 
 export default defineComponent({
@@ -22,16 +21,10 @@ export default defineComponent({
         ShowGallery,
     },
     setup() {
-        let shows = ref<Show[]>([]);
-        let genres = ref<string[]>([]);
+        store.dispatch('loadShows');
 
-        onMounted(async () => {
-            const showsArr = await request(`${API_URL}/shows`);
-            shows.value = showsArr;
-            genres.value = shuffle(groupGenres(showsArr));
-
-            store.dispatch('loadShows', shows);
-        });
+        let shows = computed(() => store.getters.getShows);
+        let genres = computed(() => shuffle(groupGenres(shows.value)));
 
         return {
             getShowsByGenre(genre: string) {

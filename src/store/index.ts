@@ -1,4 +1,7 @@
 import { createStore } from 'vuex';
+import { request } from '@/ts/utils';
+import { Show } from '@/types';
+import { API_URL } from '@/ts/constants';
 
 export default createStore({
     state: {
@@ -17,16 +20,19 @@ export default createStore({
         selectShow(state, show) {
             state.selectedShow = show;
         },
-        loadShows(state, shows) {
-            state.shows = shows;
+        async loadShows(state) {
+            if (state.shows.length === 0) {
+                const shows = await request(`${API_URL}/shows`);
+                state.shows = shows;
+            }
         }
     },
     actions: {
-        selectShow({ commit }, show) {
+        selectShow({ commit }, show: Show) {
             commit('selectShow', show);
         },
-        loadShows({ commit }, shows) {
-            commit('loadShows', shows);
+        loadShows({ commit }) {
+            commit('loadShows');
         },
     },
     modules: {},
