@@ -2,6 +2,13 @@
     <img v-if="slider" :src="show.image.medium" class="picture__slider" />
     
     <div class="show__info" :class="{ 'show__info__slider': slider, 'show__info__large': large }">
+        <font-awesome-icon
+            v-if="large"
+            class="go-back"
+            :icon="['fas', 'arrow-left']"
+            @click="goBack"
+        />
+
         <img
             v-if="large"
             :src="show.image.original"
@@ -60,6 +67,7 @@ import RatingStars from '@/components/RatingStars.vue';
 import { Show } from '@/types';
 import { formatDate } from '@/ts/utils';
 import { defineComponent, computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
     components: {
@@ -92,6 +100,11 @@ export default defineComponent({
 
         const slider = computed<boolean>(() => props.variant === 'slider');
         const large = computed<boolean>(() => props.variant === 'large');
+        const router = useRouter();
+
+        const goBack = () => {
+            router.push({ name: 'home' });
+        };
 
         return {
             slider,
@@ -99,6 +112,7 @@ export default defineComponent({
             endedDate,
             premieredDate,
             pictureAnimationOn,
+            goBack,
         };
     },
 });
@@ -119,6 +133,15 @@ export default defineComponent({
 .show__info {
     z-index: 100;
     display: flex;
+
+    .go-back {
+        margin-top: 55px;
+        margin-left: 20px;
+        cursor: pointer;
+        z-index: 100;
+        padding: 0;
+        position: relative;
+    }
 
     .show__data {
         padding: 20px;
@@ -225,6 +248,14 @@ export default defineComponent({
     }
     .picture__large__medium {
         display: none;
+    }
+
+    .show__info {
+        display: block;
+        
+        .go-back {
+            z-index: 200;
+        }
     }
 
     .show__info__slider {
