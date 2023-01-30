@@ -24,9 +24,7 @@ export default defineComponent({
         store.dispatch('loadShows');
 
         const loading = computed<boolean>(() => genres.value.length === 0);
-        const shows = computed<Show[]>(() => {
-            return shuffle(store.getters.getShows);
-        });
+        const shows = computed<Show[]>(() => shuffle(store.getters.getShows));
         const genres = computed<string[]>(() => shuffle(groupGenres(shows.value)));
         const genresLimit = ref<number>(4);
 
@@ -36,6 +34,7 @@ export default defineComponent({
             );
         };
 
+        // eslint-disable-next-line
         const lazyLoading = (elm: any) => {
             elm = elm.srcElement;
 
