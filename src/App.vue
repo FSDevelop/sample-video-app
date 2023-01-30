@@ -23,13 +23,12 @@ import ShowsSearch from '@/components/Search/ShowsSearch.vue';
 <style lang="scss">
 .fade-enter-active,
 .fade-leave-active {
-    transition-duration: 0.8s;
+    transition-duration: 0.5s;
 }
 
 .fade-enter-from,
 .fade-leave-to {
     opacity: 0;
-    transform: translateX(100%);
 }
 
 #app {

@@ -1,61 +1,58 @@
 <template>
-    <img
-        v-if="slider"
-        :src="show.image.medium"
-        class="picture__slider"
-    />
-    <div class="show__info" :class="{
-        'show__info__slider': slider,
-        'show__info__large': large,
-    }">
-        <img
-            v-if="large"
-            :src="show.image.original"
-            class="picture__large"
-        />
-
+    <img v-if="slider" :src="show.image.medium" class="picture__slider" />
+    
+    <div class="show__info" :class="{ 'show__info__slider': slider, 'show__info__large': large }">
+        <img v-if="large" :src="show.image.original" class="picture__large" />
+        
         <div class="show__data">
-            <h1
-                class="show__name"
-                v-text="show.name"
+            <RatingStars
+                v-if="show.rating.average && slider"
+                :stars="show.rating.average"
+                size="small"
             />
+
+            <h1 class="show__name" v-text="show.name" />
             <div class="show__summary" v-html="show.summary" />
 
-            <div v-if="large">
-                <table>
-                    <tr>
-                        <td><b>Average Rating:</b></td>
-                        <td>{{ show.rating.average }}</td>
-                    </tr>
-                    <tr>
-                        <td><b>Premiered on:</b></td>
-                        <td>{{ premieredDate }}</td>
-                    </tr>
-                    <tr v-if="show.ended">
-                        <td><b>Ended on:</b></td>
-                        <td>{{ endedDate }}</td>
-                    </tr>
-                    <tr>
-                        <td><b>Genres:</b></td>
-                        <td>{{ show.genres.join(', ') }}</td>
-                    </tr>
-                </table>
-            </div>
-            <p
-                v-if="slider"
-                class="show__genres"
-                v-text="show.genres.join(', ')"
-            />
+            <table v-if="large">
+                <tr>
+                    <td><b>Average Rating:</b></td>
+                    <td>
+                        <RatingStars
+                            :stars="show.rating.average"
+                            size="normal"
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Premiered on:</b></td>
+                    <td v-text="premieredDate" />
+                </tr>
+                <tr v-if="show.ended">
+                    <td><b>Ended on:</b></td>
+                    <td v-text="endedDate" />
+                </tr>
+                <tr>
+                    <td><b>Genres:</b></td>
+                    <td v-text="show.genres.join(', ')" />
+                </tr>
+            </table>
+
+            <p v-if="slider" class="show__genres" v-text="show.genres.join(', ')" />
         </div>
     </div>
 </template>
 
 <script lang="ts">
+import RatingStars from '@/components/RatingStars.vue';
 import { Show } from '@/types';
 import { formatDate } from '@/ts/utils';
 import { defineComponent, computed, ref } from 'vue';
 
 export default defineComponent({
+    components: {
+        RatingStars,
+    },
     props: {
         show: {
             type: Object as () => Show,
@@ -114,12 +111,11 @@ export default defineComponent({
 
     table {
         width: 100%;
-        max-width: 440px;
         font-size: 1.2rem;
 
         tr {
             td:first-child {
-                min-width: 160px;
+                width: 160px;
             }
         }
     }
@@ -180,7 +176,8 @@ export default defineComponent({
 @media only screen and (min-width: 769px) {
     .show__info__large {
         .show__data {
-            width: calc(70% - 40px);
+            width: calc(100% - 40px);
+            max-width: 900px;
         }
     }
 
@@ -195,7 +192,7 @@ export default defineComponent({
     }
 
     .show__info__slider {
-        width: calc(100% - 20px) !important;
+        width: 100% !important;
         height: calc(100% - 0px) !important;
         padding: 0px !important;
 
