@@ -27,9 +27,9 @@ export default createStore({
         }
     },
     actions: {
-        async selectShow({ commit }, showId: number) {
+        async selectShow({ state, commit }, showId: number) {
             try {
-                if (!this.state.selectedShow) {
+                if (!state.selectedShow || state.selectedShow.id !== showId) {
                     const selectedShow: Show = await request(`${API_URL}/shows/${showId}`);
                     commit('selectShow', selectedShow);
                 }
@@ -42,6 +42,8 @@ export default createStore({
                 if (state.shows.length === 0) {
                     const shows: Show[] = await request(`${API_URL}/shows`);
                     commit('loadShows', shows);
+                } else {
+                    commit('selectShow', null);
                 }
             } catch (e) {
                 console.error(e);
