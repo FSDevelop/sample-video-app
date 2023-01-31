@@ -254,7 +254,7 @@ export default defineComponent({
         display: block;
         
         .go-back {
-            z-index: 200;
+            z-index: 150;
         }
     }
 
